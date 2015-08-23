@@ -1,5 +1,6 @@
 package com.hj.wwtbam.gui;
 
+import com.guigarage.flatterfx.FlatterFX;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,6 +16,8 @@ public class GuiGame extends Application {
     public void start(Stage primaryStage) throws Exception {
         try {
 
+
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                     "/gui/MainScreen.fxml"));
 
@@ -24,6 +27,7 @@ public class GuiGame extends Application {
             primaryStage.setScene(scene);
             primaryStage.setTitle("WWTBAM");
             primaryStage.show();
+            FlatterFX.style();
         } catch (Exception ex) {
             System.out.println(ex);
         }
