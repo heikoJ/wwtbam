@@ -4,7 +4,6 @@ import junit.framework.TestCase;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * Created by heiko on 19.08.15.

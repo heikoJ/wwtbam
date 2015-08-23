@@ -11,8 +11,6 @@ import org.controlsfx.control.Notifications;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 /**
  * Created by heiko on 22.08.15.
@@ -53,7 +51,9 @@ public class MainScreenController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         answerButtons = new Button[] {buttonA,buttonB,buttonC,buttonD};
 
+        int i=0;
         for (Button answerButton : answerButtons) {
+            answerButton.setUserData(Answer.values()[i++]);
             answerButton.setAlignment(Pos.BASELINE_LEFT);
             answerButton.setOnAction(event -> {
                 executeAndCatch(() -> {
@@ -65,17 +65,19 @@ public class MainScreenController implements Initializable {
 
         disableAnswerButtons();
 
-        int i=0;
-        for (Answer answer : Answer.values()) {
-            answerButtons[i++].setUserData(answer);
-        }
 
+        QuestionPool questionPool = new QuestionPoolBuilder().buildPoolFromFile(getQuestonFile());
+        gameController = new GameController(questionPool);
+
+
+    }
+
+    private File getQuestonFile() throws RuntimeException  {
         try {
-            QuestionPool questionPool = new QuestionPoolBuilder().buildPoolFromFile(new File(this.getClass().getClassLoader().getResource("quiz.csv").toURI()));
-            gameController = new GameController(questionPool);
-
-        } catch (Exception e) {
+            return new File(this.getClass().getClassLoader().getResource("quiz.csv").toURI());
+        } catch(Exception e) {
             e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
         }
 
     }
@@ -170,7 +172,7 @@ public class MainScreenController implements Initializable {
     }
 
 
-    private void executeAndCatch(Runnable runnable) {
+    private void executeAndCatch(Runnable runnable)  {
         try {
             runnable.run();
         } catch(Exception e) {

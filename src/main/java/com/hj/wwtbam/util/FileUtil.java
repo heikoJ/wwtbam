@@ -13,18 +13,21 @@ import java.util.List;
  */
 public class FileUtil {
 
-    public static List<List<String>> readFromCsvFile(File file) throws IOException {
+    public static List<List<String>> readFromCsvFile(File file)  {
+        try {
+            List<List<String>> rows = new ArrayList<>();
 
-        List<List<String>> rows = new ArrayList<>();
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+            while ((line = br.readLine()) != null) {
+                List<String> row = Arrays.asList(line.split(";"));
+                rows.add(row);
+            }
 
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        String line;
-        while ((line = br.readLine()) != null) {
-            List<String> row = Arrays.asList(line.split(";"));
-            rows.add(row);
+            return rows;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-
-        return rows;
     }
 
 }

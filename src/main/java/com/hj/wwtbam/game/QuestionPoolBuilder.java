@@ -21,7 +21,7 @@ public class QuestionPoolBuilder {
     }
 
 
-    public  QuestionPool buildPoolFromFile (File csvFile) throws Exception {
+    public  QuestionPool buildPoolFromFile (File csvFile) throws RuntimeException {
         List<List<String>> rows = FileUtil.readFromCsvFile(csvFile);
         addQuestionsFormList(rows);
         return pool;
