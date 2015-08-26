@@ -36,7 +36,7 @@ public class CliGame implements Game {
 
 
     public void init() throws Exception {
-        QuestionPool questionPool = new QuestionPoolBuilder().
+        QuestionPool questionPool = QuestionPoolBuilder.create().
                 buildPoolFromFile(new File(this.getClass().getClassLoader().getResource("quiz.csv").toURI()));
 
         gameController = new GameController(questionPool);
@@ -65,6 +65,7 @@ public class CliGame implements Game {
             correctAnswer();
         } else {
             printGameOver();
+            askForNewGame();
         }
     }
 
@@ -72,8 +73,21 @@ public class CliGame implements Game {
         printCorrectAnswer();
         if(gameController.hasWon()) {
             printWonMessage();
+            askForNewGame();
         } else {
             playNextRound();
+        }
+    }
+
+    private void askForNewGame() {
+        System.out.println("Start new game ?");
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.next();
+        if("Y".equalsIgnoreCase(input)) {
+            startGame();
+        } else {
+            System.out.println("Goodbye");
+            System.exit(0);
         }
     }
 

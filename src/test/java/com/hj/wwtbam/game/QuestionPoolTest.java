@@ -13,7 +13,7 @@ public class QuestionPoolTest extends TestCase {
 
     @Test
     public void testPool() throws Exception {
-        QuestionPool pool = new QuestionPoolBuilder().
+        QuestionPool pool = QuestionPoolBuilder.create().
                 buildPoolFromFile (new File( this.getClass().getClassLoader().getResource("quiz.csv").toURI()));
 
         Question question = pool.getRandomQuestionForLevel(1);

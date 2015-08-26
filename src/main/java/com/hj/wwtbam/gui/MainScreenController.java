@@ -66,7 +66,8 @@ public class MainScreenController implements Initializable {
         disableAnswerButtons();
 
 
-        QuestionPool questionPool = new QuestionPoolBuilder().buildPoolFromFile(getQuestonFile());
+        QuestionPool questionPool = QuestionPoolBuilder.create().
+                buildPoolFromFile(getQuestonFile());
         gameController = new GameController(questionPool);
 
 

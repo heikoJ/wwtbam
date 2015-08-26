@@ -14,14 +14,20 @@ import java.util.*;
 public class QuestionPoolBuilder {
 
 
+
     private QuestionPool pool;
 
-    public QuestionPoolBuilder() {
+    private QuestionPoolBuilder() {
         pool = new QuestionPool();
     }
 
 
-    public  QuestionPool buildPoolFromFile (File csvFile) throws RuntimeException {
+
+    public static QuestionPoolBuilder create() {
+        return new QuestionPoolBuilder();
+    }
+
+    public QuestionPool buildPoolFromFile (File csvFile) throws RuntimeException {
         List<List<String>> rows = FileUtil.readFromCsvFile(csvFile);
         addQuestionsFormList(rows);
         return pool;
@@ -48,11 +54,11 @@ public class QuestionPoolBuilder {
 
             Map<Answer,String> answerMap = new HashMap<>();
 
+            int i=0;
+            for(Answer answer : Answer.values()) {
+                answerMap.put(answer,answers.get(i++));
+            }
 
-            answerMap.put(Answer.A,answers.get(0));
-            answerMap.put(Answer.B,answers.get(1));
-            answerMap.put(Answer.C,answers.get(2));
-            answerMap.put(Answer.D,answers.get(3));
 
             Answer correctAnswer = answerMap.keySet().stream().
                     filter(e-> answerMap.get(e).equals(correctAnswerString)).
