@@ -33,7 +33,7 @@ public class QuestionPool {
         if(questionsForLevel.isEmpty()) {
             throw new RuntimeException("Sorry, no more questions left");
         }
-        int index = getRandomIntegerWithMaxValue(questionsForLevel.size()-1);
+        int index = getRandomIntegerWithMaxValue(questionsForLevel.size() - 1);
         return questionsForLevel.remove(index);
     }
 
