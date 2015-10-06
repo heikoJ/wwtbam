@@ -1,6 +1,8 @@
 package com.hj.wwtbam.gui;
 
 import com.hj.wwtbam.game.*;
+import com.hj.wwtbam.util.ExceptionalProducer;
+import com.hj.wwtbam.util.ExceptionalRunnable;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -11,6 +13,8 @@ import org.controlsfx.control.Notifications;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+
 
 /**
  * Created by heiko on 22.08.15.
@@ -56,7 +60,7 @@ public class MainScreenController implements Initializable {
             answerButton.setUserData(Answer.values()[i++]);
             answerButton.setAlignment(Pos.BASELINE_LEFT);
             answerButton.setOnAction(event -> {
-                executeAndCatch(() -> {
+                executeAndCatch( ()-> {
                     Answer answer = (Answer) answerButton.getUserData();
                     answerQuestion(answer);
                 });
@@ -65,26 +69,23 @@ public class MainScreenController implements Initializable {
 
         disableAnswerButtons();
 
-
         QuestionPool questionPool = QuestionPoolBuilder.create().
                 buildPoolFromFile(getQuestonFile());
         gameController = new GameController(questionPool);
 
 
+
     }
 
-    private File getQuestonFile() throws RuntimeException  {
-        try {
-            return new File(this.getClass().getClassLoader().getResource("quiz.csv").toURI());
-        } catch(Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e.getMessage());
-        }
+    private File getQuestonFile()   {
+        return
+            new File(produceAndCatch(() -> this.getClass().getClassLoader().getResource("quisz.csv").toURI()));
 
     }
 
 
     public void newGame() {
+
         executeAndCatch(() -> {
             gameController.start();
             buttonNewGame.setDisable(true);
@@ -156,7 +157,7 @@ public class MainScreenController implements Initializable {
     }
 
 
-    public void showNotification(String title, String text) {
+    public static void showNotification(String title, String text) {
         Notifications.create().
                 title(title).
                 text(text).
@@ -164,7 +165,7 @@ public class MainScreenController implements Initializable {
                 showInformation();
     }
 
-    public void showError(String text) {
+    public static void showError(String text) {
         Notifications.create().
                 title("Error").
                 text(text).
@@ -173,11 +174,23 @@ public class MainScreenController implements Initializable {
     }
 
 
-    private void executeAndCatch(Runnable runnable)  {
+    private static void executeAndCatch(ExceptionalRunnable runnable) {
         try {
             runnable.run();
         } catch(Exception e) {
             showError(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
+
+    private  static <T> T  produceAndCatch(ExceptionalProducer<T,Exception> producer) {
+        try {
+            return producer.produce();
+        } catch(Exception e) {
+            e.printStackTrace();
+            showError(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
 }
