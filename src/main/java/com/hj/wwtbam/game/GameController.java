@@ -26,7 +26,7 @@ public class GameController {
 
     public void start() {
         money = 0;
-        round = 0;
+        round = 1;
         status = GameStatus.RUNNING;
         currentQuestion = Optional.empty();
     }
@@ -34,7 +34,6 @@ public class GameController {
     public Question nextQuestion() {
         checkGameStatus();
         if(!currentQuestion.isPresent()) {
-            round++;
             currentQuestion = Optional.of(questionPool.getRandomQuestionForLevel(round));
         }
         return currentQuestion.get();
@@ -53,6 +52,7 @@ public class GameController {
             if(isLastRound()) {
                 status = GameStatus.WON;
             }
+            round++;
             currentQuestion = Optional.empty();
             return AnswerResult.RIGHT;
         } else {

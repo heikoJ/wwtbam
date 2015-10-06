@@ -143,7 +143,7 @@ public class MainScreenController implements Initializable {
     }
 
     private void updateGameInfo() {
-        labelRound.setText("Round: " + (gameController.getCurrentRound() + 1));
+        labelRound.setText("Round: " + (gameController.getCurrentRound() ));
         labelMoney.setText("Money: " + gameController.getPrizeMoney() + "€");
     }
 

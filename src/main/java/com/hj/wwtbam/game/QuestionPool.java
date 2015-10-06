@@ -1,7 +1,7 @@
 package com.hj.wwtbam.game;
 
 import com.hj.wwtbam.util.FileUtil;
-import com.sun.tools.javac.util.Assert;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +29,10 @@ public class QuestionPool {
 
      Question getRandomQuestionForLevel(Integer level) {
         List<Question> questionsForLevel = questions.get(level);
-        Assert.checkNonNull(questionsForLevel,"QuestionPool was not initialized!");
+        if(questionsForLevel==null) {
+            throw new RuntimeException("QuestionPool was not initialized!");
+        }
+
         if(questionsForLevel.isEmpty()) {
             throw new RuntimeException("Sorry, no more questions left");
         }
