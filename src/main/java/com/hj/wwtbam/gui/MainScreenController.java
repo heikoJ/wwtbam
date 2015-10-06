@@ -1,7 +1,6 @@
 package com.hj.wwtbam.gui;
 
 import com.hj.wwtbam.game.*;
-import com.hj.wwtbam.util.ExceptionalProducer;
 import com.hj.wwtbam.util.ExceptionalRunnable;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,7 +12,7 @@ import org.controlsfx.control.Notifications;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
-
+import java.util.concurrent.Callable;
 
 
 /**
@@ -79,7 +78,7 @@ public class MainScreenController implements Initializable {
 
     private File getQuestonFile()   {
         return
-            new File(produceAndCatch(() -> this.getClass().getClassLoader().getResource("quisz.csv").toURI()));
+            new File(produceAndCatch(() -> this.getClass().getClassLoader().getResource("quiz.csv").toURI()));
 
     }
 
@@ -183,9 +182,9 @@ public class MainScreenController implements Initializable {
         }
     }
 
-    private  static <T> T  produceAndCatch(ExceptionalProducer<T,Exception> producer) {
+    private  static <T> T  produceAndCatch(Callable<T> callable) {
         try {
-            return producer.produce();
+            return callable.call();
         } catch(Exception e) {
             e.printStackTrace();
             showError(e.getMessage());
